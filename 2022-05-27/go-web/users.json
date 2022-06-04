@@ -9,7 +9,7 @@
         {
             "id": 1,
             "name": "João",
-            "lastname": "Silva",
+            "surname": "Silva",
             "email": "joao.silva@gmail.com",
             "age": 20,
             "height": 1.80,
@@ -19,7 +19,7 @@
         {
             "id": 2,
             "name": "Maria",
-            "lastname": "Souza",
+            "surname": "Souza",
             "email": "maria.souza@gmail.com",
             "age": 25,
             "height": 1.60,
@@ -29,7 +29,7 @@
         {
             "id": 3,
             "name": "José",
-            "lastname": "Oliveira",
+            "surname": "Oliveira",
             "email": "jose.oliveira@hotmail.com",
             "age": 30,
             "height": 1.70,
