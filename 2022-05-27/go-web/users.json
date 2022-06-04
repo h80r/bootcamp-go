@@ -1,0 +1,40 @@
+{
+    "statement": [
+        "Gere um JSON que atenda as seguintes chaves:",
+        "Usuários variam por id, nome, sobrenome, e-mail, idade, altura, ativo (sim-não), data de criação.",
+        "1. Dentro da pasta go-web crie um arquivo users.json",
+        "2. Dentro dele escreva um JSON que permita ter uma matriz de usuários com todas as suas variantes."
+    ],
+    "data": [
+        {
+            "id": 1,
+            "name": "João",
+            "lastname": "Silva",
+            "email": "joao.silva@gmail.com",
+            "age": 20,
+            "height": 1.80,
+            "active": true,
+            "created_at": "2020-01-01"
+        },
+        {
+            "id": 2,
+            "name": "Maria",
+            "lastname": "Souza",
+            "email": "maria.souza@gmail.com",
+            "age": 25,
+            "height": 1.60,
+            "active": false,
+            "created_at": "2020-01-02"
+        },
+        {
+            "id": 3,
+            "name": "José",
+            "lastname": "Oliveira",
+            "email": "jose.oliveira@hotmail.com",
+            "age": 30,
+            "height": 1.70,
+            "active": true,
+            "created_at": "2020-01-03"
+        }
+    ]
+}
