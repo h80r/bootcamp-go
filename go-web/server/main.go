@@ -38,6 +38,8 @@ func main() {
 		userRoutes.POST("/", controller.Create)
 
 		userRoutes.PUT("/:id", controller.Modify)
+
+		userRoutes.DELETE("/:id", controller.Delete)
 	}
 
 	router.Run(":8080")

@@ -13,8 +13,9 @@ type Repository interface {
 	GetById(id int) (*User, error)
 	LastID() (int, error)
 	Create(name, surname, email string, age int, height float64) (*User, error)
-	UserExists(id int) (bool, error)
+	UserExists(id int) error
 	Modify(id int, name, surname, email string, age int, height float64) (*User, error)
+	Delete(id int) error
 }
 
 type repository struct {
@@ -101,13 +102,31 @@ func (r *repository) Modify(id int, name, surname, email string, age int, height
 	return r.GetById(id)
 }
 
-func (r *repository) UserExists(id int) (bool, error) {
+func (r *repository) UserExists(id int) error {
 	_, err := r.GetById(id)
 	if err != nil {
-		return false, err
+		return err
 	}
 
-	return true, nil
+	return nil
+}
+
+func (r *repository) Delete(id int) error {
+	err := r.UserExists(id)
+	if err != nil {
+		return err
+	}
+
+	var index int
+	for i, u := range *r.database {
+		if u.ID != id {
+			continue
+		}
+		index = i
+	}
+
+	*r.database = append((*r.database)[:index], (*r.database)[index+1:]...)
+	return nil
 }
 
 func NewRepository() Repository {

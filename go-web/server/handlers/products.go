@@ -81,12 +81,6 @@ func (u *UserController) GetById(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// É solicitado a implementação de uma funcionalidade que modifique completamente uma
-// entidade. Para isso, é necessário seguir os seguintes passos:
-// 1. Gere um método PUT para modificar toda a entidade.
-// 2. No Path envie o ID da entidade a ser modificada.
-// 3. Se não existir, retorne um erro 404..
-// 4. Realize todas as validações (todos os campos são obrigatórios).
 func (u *UserController) Modify(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -97,7 +91,7 @@ func (u *UserController) Modify(c *gin.Context) {
 		return
 	}
 
-	_, err = u.service.UserExists(id)
+	err = u.service.UserExists(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "Usuário não encontrado",
@@ -133,6 +127,34 @@ func (u *UserController) Modify(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+// É necessário implementar uma funcionalidade para excluir uma entidade. Para isso, é
+// necessário seguir os seguintes passos:
+// 1. Gere um método DELETE para excluir a entidade com base no ID.
+// 2. Se não existir, retorne um erro 404.
+func (u *UserController) Delete(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "ID inválido",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	err = u.service.Delete(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "Usuário não encontrado",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Usuário deletado com sucesso.",
+	})
 }
 
 func NewUserController(service internal.Service) *UserController {

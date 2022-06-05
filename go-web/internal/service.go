@@ -4,8 +4,9 @@ type Service interface {
 	GetAll() ([]User, error)
 	GetById(id int) (User, error)
 	Create(name, surname, email string, age int, height float64) (User, error)
-	UserExists(id int) (bool, error)
+	UserExists(id int) error
 	Modify(id int, name, surname, email string, age int, height float64) (User, error)
+	Delete(id int) error
 }
 
 type service struct {
@@ -44,12 +45,12 @@ func (s *service) Modify(id int, name, surname, email string, age int, height fl
 	return *user, nil
 }
 
-func (s *service) UserExists(id int) (bool, error) {
-	_, err := s.repository.GetById(id)
-	if err != nil {
-		return false, err
-	}
-	return true, nil
+func (s *service) UserExists(id int) error {
+	return s.repository.UserExists(id)
+}
+
+func (s *service) Delete(id int) error {
+	return s.repository.Delete(id)
 }
 
 func NewService(repository Repository) Service {
