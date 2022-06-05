@@ -14,14 +14,6 @@ type UserController struct {
 }
 
 func (u *UserController) Create(c *gin.Context) {
-	token := c.GetHeader("Authorization")
-	if token != "0908762111" {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Você não tem permissão para fazer a solicitação solicitada",
-		})
-		return
-	}
-
 	var req models.Request
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -96,14 +88,6 @@ func (u *UserController) GetById(c *gin.Context) {
 // 3. Se não existir, retorne um erro 404..
 // 4. Realize todas as validações (todos os campos são obrigatórios).
 func (u *UserController) Modify(c *gin.Context) {
-	token := c.GetHeader("Authorization")
-	if token != "0908762111" {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Você não tem permissão para fazer a solicitação solicitada",
-		})
-		return
-	}
-
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

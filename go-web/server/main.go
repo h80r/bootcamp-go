@@ -3,11 +3,19 @@ package main
 import (
 	"go-web/internal"
 	"go-web/server/handlers"
+	"go-web/server/middleware"
+	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load("../.env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	router := gin.Default()
 
 	repo := internal.NewRepository()
@@ -20,12 +28,17 @@ func main() {
 		})
 	})
 
-	router.GET("/users", controller.GetAll)
-	router.GET("/users/:id", controller.GetById)
+	userRoutes := router.Group("/users")
+	{
+		userRoutes.GET("/", controller.GetAll)
+		userRoutes.GET("/:id", controller.GetById)
 
-	router.POST("/users", controller.Create)
+		userRoutes.Use(middleware.AuthMiddleware())
 
-	router.PUT("/users/:id", controller.Modify)
+		userRoutes.POST("/", controller.Create)
+
+		userRoutes.PUT("/:id", controller.Modify)
+	}
 
 	router.Run(":8080")
 }
