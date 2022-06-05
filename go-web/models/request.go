@@ -11,9 +11,6 @@ type Request struct {
 }
 
 func (r *Request) IsValid() error {
-	// 2. Caso algum campo não esteja completo, um código de erro 400 deve ser retornado
-	// com a mensagem “campo %s é obrigatório”.
-	// (Em %s deve ir o nome do campo que não está completo).
 	if r.Name == "" {
 		return fmt.Errorf("campo name é obrigatório")
 	}

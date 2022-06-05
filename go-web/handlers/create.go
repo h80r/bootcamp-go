@@ -10,6 +10,21 @@ import (
 )
 
 func Create(c *gin.Context) {
+	// Para adicionar segurança à aplicação, o pedido deve ser enviado com um token, para isso
+	// devem ser seguidos os seguintes passos:
+	// 1. No momento do envio da solicitação, deve ser validado que um token é enviado
+	// 2. Esse token deve ser validado em nosso código (o token pode ser codificado
+	// permanentemente).
+	// 3. Caso o token enviado não esteja correto, devemos retornar um erro 401 e uma
+	// mensagem que "você não tem permissão para fazer a solicitação solicitada".
+	token := c.GetHeader("Authorization")
+	if token != "0908762111" {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Você não tem permissão para fazer a solicitação solicitada",
+		})
+		return
+	}
+
 	database, err := utils.ReadDatabase()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -30,10 +45,6 @@ func Create(c *gin.Context) {
 		return
 	}
 
-	// As validações dos campos devem ser implementadas no momento do envio do pedido, para
-	// isso devem ser seguidos os seguintes passos:
-	// 1. Todos os campos enviados na solicitação devem ser validados, todos os campos são
-	// obrigatórios
 	if err := req.IsValid(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Não foi possível validar a requisição.",
@@ -54,4 +65,8 @@ func Create(c *gin.Context) {
 	}
 
 	utils.IncludeDatabase(&newUser)
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "Usuário criado com sucesso.",
+		"user":    newUser,
+	})
 }
