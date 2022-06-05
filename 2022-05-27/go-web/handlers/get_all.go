@@ -1,33 +1,22 @@
 package handlers
 
 import (
-	"encoding/json"
-	"os"
+	"net/http"
 
-	"go-web/models"
+	"go-web/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 func GetAll(c *gin.Context) {
-	fileBytes, err := os.ReadFile("users.json")
+	users, err := utils.ReadDatabase()
 	if err != nil {
-		c.JSON(500, gin.H{
-			"message": "Erro ao ler arquivo",
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Erro ao deserializar usuários",
 			"error":   err.Error(),
 		})
 		return
 	}
 
-	var users []models.User
-	err = json.Unmarshal(fileBytes, &users)
-	if err != nil {
-		c.JSON(500, gin.H{
-			"message": "Erro ao deserializar arquivo",
-			"error":   err.Error(),
-		})
-		return
-	}
-
-	c.JSON(200, users)
+	c.JSON(http.StatusOK, &users)
 }
