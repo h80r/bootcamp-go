@@ -18,9 +18,6 @@ func main() {
 	router.GET("/users", handlers.GetAll)
 	router.GET("/users/:id", handlers.GetById)
 
-	// A funcionalidade para criar a entidade deve ser implementada. Se isso acontecer, os
-	// seguintes passos devem ser seguidos:
-	// 1. Crie um endpoint por meio de POST que receba a entidade.
 	router.POST("/users", handlers.Create)
 
 	router.Run(":8080")

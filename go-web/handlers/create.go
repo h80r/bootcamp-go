@@ -9,9 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// 3. No momento de fazer a solicitação, o ID deve ser gerado. Para gerar o ID, devemos
-// procurar o ID do último registro gerado, incrementá-lo em 1 e atribuí-lo ao nosso novo
-// registro (sem ter uma variável global do último ID).
 func Create(c *gin.Context) {
 	database, err := utils.ReadDatabase()
 	if err != nil {
@@ -27,7 +24,19 @@ func Create(c *gin.Context) {
 	var req models.Request
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Não foi possível ler o JSON.",
+			"message": "Não foi possível ler a requisição.",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	// As validações dos campos devem ser implementadas no momento do envio do pedido, para
+	// isso devem ser seguidos os seguintes passos:
+	// 1. Todos os campos enviados na solicitação devem ser validados, todos os campos são
+	// obrigatórios
+	if err := req.IsValid(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Não foi possível validar a requisição.",
 			"error":   err.Error(),
 		})
 		return
