@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"go-web/internal"
 	"go-web/models"
 	"go-web/utils"
 	"net/http"
@@ -53,7 +54,7 @@ func Create(c *gin.Context) {
 		return
 	}
 
-	newUser := models.User{
+	newUser := internal.User{
 		ID:        lastID + 1,
 		Name:      req.Name,
 		Surname:   req.Surname,

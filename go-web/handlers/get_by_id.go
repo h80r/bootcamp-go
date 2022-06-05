@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"errors"
-	"go-web/models"
+	"go-web/internal"
 	"go-web/utils"
 	"net/http"
 	"strconv"
@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func getUser(users *[]models.User, id int) (*models.User, error) {
+func getUser(users *[]internal.User, id int) (*internal.User, error) {
 	for _, user := range *users {
 		if user.ID == id {
 			return &user, nil

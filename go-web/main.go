@@ -6,6 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// A estrutura do projeto deve ser separada e como primeiro passo gerando o pacote interno,
+// todas as funcionalidades que não dependem de pacotes externos devem estar no pacote
+// interno.
+
 func main() {
 	router := gin.Default()
 

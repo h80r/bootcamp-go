@@ -1,4 +1,4 @@
-package models
+package internal
 
 type User struct {
 	ID        int     `json:"id"`
