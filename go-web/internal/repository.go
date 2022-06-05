@@ -1,14 +1,3 @@
-// Dentro do pacote devem estar as camadas:
-// 2. Repository, você deve ter acesso à variável armazenada na memória.
-// a. O arquivo repository.go deve ser criado
-// b. A estrutura da entidade deve ser criada
-// c. Variáveis globais devem ser criadas para armazenar as entidades
-// d. A interface Repository deve ser gerada com todos os seus métodos
-// e. A estrutura do repositório deve ser gerada
-// f. Deve ser gerada uma função que retorne o Repositório
-// g. Todos os métodos correspondentes às operações a serem executadas (GetAll,
-// Store, etc.) devem ser implementados.
-
 package internal
 
 import (
@@ -35,7 +24,7 @@ func (r *repository) GetAll() ([]User, error) {
 		return *r.database, nil
 	}
 
-	fileBytes, err := os.ReadFile("users.json")
+	fileBytes, err := os.ReadFile("../users.json")
 	if err != nil {
 		return nil, err
 	}

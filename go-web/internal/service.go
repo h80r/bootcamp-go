@@ -1,12 +1,3 @@
-// Dentro do pacote devem estar as camadas:
-// 1. Service, deve conter a lógica da nossa aplicação.
-// a. O arquivo service.go deve ser criado.
-// b. A interface Service com todos os seus métodos deve ser gerada.
-// c. A estrutura de serviço que contém o repositório deve ser gerada.
-// d. Deve ser gerada uma função que retorne o Serviço.
-// e. Todos os métodos correspondentes às operações a serem executadas (GetAll,
-// Create, etc.) devem ser implementados.
-
 package internal
 
 type Service interface {
