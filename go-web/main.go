@@ -16,17 +16,12 @@ func main() {
 	})
 
 	router.GET("/users", handlers.GetAll)
-
-	// Gere um novo endpoint que nos permita buscar um único resultado do array de temas.
-	// Usando parâmetros de caminho o endpoint deve ser /theme/:id (lembre-se que o tema
-	// sempre tem que ser plural). Uma vez que o id é recebido, ele retorna a posição
-	// correspondente.
-	// 1. Gere uma nova rota.
-	// 2. Gera um manipulador para a rota criada.
-	// 3. Dentro do manipulador, procure o item que você precisa.
-	// 4. Retorna o item de acordo com o id.
-	// Se você não encontrou nenhum elemento com esse id retorne como código de resposta 404.
 	router.GET("/users/:id", handlers.GetById)
+
+	// A funcionalidade para criar a entidade deve ser implementada. Se isso acontecer, os
+	// seguintes passos devem ser seguidos:
+	// 1. Crie um endpoint por meio de POST que receba a entidade.
+	router.POST("/users", handlers.Create)
 
 	router.Run(":8080")
 }

@@ -7,6 +7,10 @@ import (
 )
 
 func ReadDatabase() (*[]models.User, error) {
+	if database != nil {
+		return database, nil
+	}
+
 	fileBytes, err := os.ReadFile("users.json")
 	if err != nil {
 		return nil, err
@@ -17,5 +21,7 @@ func ReadDatabase() (*[]models.User, error) {
 		return nil, err
 	}
 
-	return &users, nil
+	database = &users
+
+	return database, nil
 }
