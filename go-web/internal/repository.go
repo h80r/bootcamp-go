@@ -9,19 +9,21 @@ import (
 )
 
 type Repository interface {
-	GetAll() ([]User, error)
-	GetById(id int) (User, error)
+	GetAll() (*[]User, error)
+	GetById(id int) (*User, error)
 	LastID() (int, error)
-	Create(name, surname, email string, age int, height float64) (User, error)
+	Create(name, surname, email string, age int, height float64) (*User, error)
+	UserExists(id int) (bool, error)
+	Modify(id int, name, surname, email string, age int, height float64) (*User, error)
 }
 
 type repository struct {
 	database *[]User
 }
 
-func (r *repository) GetAll() ([]User, error) {
+func (r *repository) GetAll() (*[]User, error) {
 	if r.database != nil {
-		return *r.database, nil
+		return r.database, nil
 	}
 
 	fileBytes, err := os.ReadFile("../users.json")
@@ -36,22 +38,22 @@ func (r *repository) GetAll() ([]User, error) {
 
 	r.database = &users
 
-	return *r.database, nil
+	return r.database, nil
 }
 
-func (r *repository) GetById(id int) (User, error) {
+func (r *repository) GetById(id int) (*User, error) {
 	db, err := r.GetAll()
 	if err != nil {
-		return User{}, err
+		return nil, err
 	}
 
-	for _, user := range db {
+	for _, user := range *db {
 		if user.ID == id {
-			return user, nil
+			return &user, nil
 		}
 	}
 
-	return User{}, errors.New("users array does not contain user with id " + strconv.Itoa(id))
+	return nil, errors.New("users array does not contain user with id " + strconv.Itoa(id))
 }
 
 func (r *repository) LastID() (int, error) {
@@ -60,13 +62,13 @@ func (r *repository) LastID() (int, error) {
 		return 0, err
 	}
 
-	return db[len(db)-1].ID, nil
+	return (*db)[len(*db)-1].ID, nil
 }
 
-func (r *repository) Create(name, surname, email string, age int, height float64) (User, error) {
+func (r *repository) Create(name, surname, email string, age int, height float64) (*User, error) {
 	newID, err := r.LastID()
 	if err != nil {
-		return User{}, err
+		return nil, err
 	}
 
 	user := User{
@@ -81,7 +83,31 @@ func (r *repository) Create(name, surname, email string, age int, height float64
 	}
 
 	*r.database = append(*r.database, user)
-	return user, nil
+	return &user, nil
+}
+
+func (r *repository) Modify(id int, name, surname, email string, age int, height float64) (*User, error) {
+	for i, u := range *r.database {
+		if u.ID != id {
+			continue
+		}
+		(*r.database)[i].Name = name
+		(*r.database)[i].Surname = surname
+		(*r.database)[i].Email = email
+		(*r.database)[i].Age = age
+		(*r.database)[i].Height = height
+	}
+
+	return r.GetById(id)
+}
+
+func (r *repository) UserExists(id int) (bool, error) {
+	_, err := r.GetById(id)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
 
 func NewRepository() Repository {

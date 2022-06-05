@@ -7,14 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// A estrutura do projeto deve ser separada, como segundo passo deve ser gerado o pacote do
-// servidor onde serão adicionadas as funcionalidades do projeto que dependem de pacotes
-// externos e o principal do programa.
-
-// Dentro do pacote deve estar:
-// 1. O main do programa.
-// a. O repositório, serviço e handler devem ser importados e injetados
-// b. O roteador deve ser implementado para os diferentes endpoints
 func main() {
 	router := gin.Default()
 
@@ -32,6 +24,8 @@ func main() {
 	router.GET("/users/:id", controller.GetById)
 
 	router.POST("/users", controller.Create)
+
+	router.PUT("/users/:id", controller.Modify)
 
 	router.Run(":8080")
 }
